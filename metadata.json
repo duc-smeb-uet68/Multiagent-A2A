@@ -1,0 +1,47 @@
+{
+  "model": "Qwen/Qwen3-8B",
+  "parameter_size": "8.2B",
+  "model_limit_compliance": "8.2B <= 10B per agent",
+  "policy_version": "EC_POLICY_V1",
+  "framework": {
+    "orchestration": "custom Python structured-handoff multi-agent",
+    "inference": "Hugging Face Transformers",
+    "transformers_version": null,
+    "bitsandbytes_version": null,
+    "pandas_version": "2.2.3"
+  },
+  "runtime": {
+    "environment": "local",
+    "python_version": "3.13.1",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "started_at_utc": "2026-08-05T04:10:43.573751+00:00",
+    "duration_seconds": 0.174,
+    "gpu_count": 0,
+    "gpus": [],
+    "torch_version": "2.6.0+cpu",
+    "cuda_available": false
+  },
+  "llm_backend": {
+    "requested": false,
+    "status": "disabled_deterministic_fallback",
+    "source": null,
+    "quantization": null,
+    "generation": {
+      "enable_thinking": false,
+      "do_sample": false,
+      "max_new_tokens": 96
+    },
+    "calls": 0,
+    "parsed_responses": 0,
+    "generation_errors": 0,
+    "load_errors": []
+  },
+  "run": {
+    "run_id": "6de973103b21452bbca2a37f2a2ed907",
+    "cases_processed": 50,
+    "qwen_validated_cases": 0,
+    "deterministic_fallback_cases": 50,
+    "verifier_repairs": 0,
+    "trace_events": 502
+  }
+}
