@@ -6,11 +6,10 @@
 
 | Thông tin | Nội dung |
 | --- | --- |
-| Họ và tên | [TỰ ĐIỀN: họ và tên] |
-| MSSV | [TỰ ĐIỀN: mã số sinh viên] |
-| Khóa/Lớp | [TỰ ĐIỀN: khóa/lớp] |
-| Vai trò chính | Tác giả duy nhất: phân tích, thiết kế, lập trình, kiểm thử và đóng gói toàn bộ pipeline |
-| Ngày hoàn thành | [TỰ ĐIỀN: ngày hoàn thành hoặc ngày nộp thực tế] |
+| Họ và tên | Lê Hồng Đức |
+| MSSV | 2A202601313 |
+| Vai trò chính | Làm 1 mình: phân tích, thiết kế, lập trình, kiểm thử và đóng gói toàn bộ pipeline |
+| Ngày hoàn thành | [5/8/2026 |
 
 ## 2. Vai trò và phạm vi công việc
 
@@ -172,11 +171,11 @@ Olist, có optional local Qwen.
 
 Tôi sẽ tự kiểm tra và đánh dấu trước khi nộp:
 
-- [ ] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
-- [ ] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
-- [ ] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
-- [ ] Báo cáo không chứa .env, API key, token hoặc secret.
-- [ ] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
+- [x] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
+- [x] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
+- [x] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
+- [x] Báo cáo không chứa .env, API key, token hoặc secret.
+- [x] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
 
-**Họ và tên:** [TỰ ĐIỀN: họ và tên]<br>
-**Ngày xác nhận:** [TỰ ĐIỀN: ngày xác nhận thực tế]
+Lê Hồng Đức
+5/8
