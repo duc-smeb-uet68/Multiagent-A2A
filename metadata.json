@@ -1,12 +1,48 @@
 {
-  "model": "Qwen/Qwen3-8B",
-  "parameter_size": "8.2B",
-  "model_limit_compliance": "8.2B <= 10B per agent",
+  "model": {
+    "configured_model": "Qwen/Qwen3-8B",
+    "parameter_size": "8.2B",
+    "model_limit_compliance": "8.2B <= 10B per agent",
+    "network_permitted": false,
+    "download_policy": "forbidden_local_files_only",
+    "requested": false,
+    "effective_model": null,
+    "status": "disabled_deterministic_fallback",
+    "ready": false,
+    "offline_enforced": true,
+    "source": null,
+    "source_kind": null,
+    "revision": null,
+    "quantization": null,
+    "generation": {
+      "enable_thinking": false,
+      "do_sample": false,
+      "max_input_tokens": 2048,
+      "max_new_tokens": 96
+    },
+    "calls": 0,
+    "parsed_responses": 0,
+    "parse_errors": 0,
+    "generation_errors": 0,
+    "error_counts": {
+      "disabled": 1
+    },
+    "errors": [
+      {
+        "code": "disabled",
+        "phase": "configuration",
+        "message": "LLM is disabled",
+        "recoverable": true,
+        "source_kind": null
+      }
+    ]
+  },
   "policy_version": "EC_POLICY_V1",
   "framework": {
-    "orchestration": "custom Python structured-handoff multi-agent",
-    "inference": "Hugging Face Transformers",
+    "orchestration": "custom Python typed structured-handoff multi-agent",
+    "inference": "Hugging Face Transformers (optional, local-only)",
     "transformers_version": null,
+    "accelerate_version": null,
     "bitsandbytes_version": null,
     "pandas_version": "2.2.3"
   },
@@ -14,34 +50,58 @@
     "environment": "local",
     "python_version": "3.13.1",
     "platform": "Windows-11-10.0.26200-SP0",
-    "started_at_utc": "2026-08-05T04:10:43.573751+00:00",
-    "duration_seconds": 0.174,
+    "started_at_utc": "2026-08-05T04:59:50.256248+00:00",
+    "duration_seconds": 0.282,
     "gpu_count": 0,
     "gpus": [],
     "torch_version": "2.6.0+cpu",
     "cuda_available": false
   },
-  "llm_backend": {
-    "requested": false,
-    "status": "disabled_deterministic_fallback",
-    "source": null,
-    "quantization": null,
-    "generation": {
-      "enable_thinking": false,
-      "do_sample": false,
-      "max_new_tokens": 96
+  "data": {
+    "source_row_counts": {
+      "orders": 99441,
+      "items": 112650,
+      "payments": 103886,
+      "sellers": 3095
     },
-    "calls": 0,
-    "parsed_responses": 0,
-    "generation_errors": 0,
-    "load_errors": []
+    "retained_row_counts": {
+      "orders": 50,
+      "items": 48,
+      "payments": 60,
+      "sellers": 40
+    }
   },
   "run": {
-    "run_id": "6de973103b21452bbca2a37f2a2ed907",
+    "run_id": "9bc4d1b2796240cb8243d36e7910936c",
     "cases_processed": 50,
     "qwen_validated_cases": 0,
     "deterministic_fallback_cases": 50,
+    "fallback_cases_by_reason": {
+      "disabled": 50
+    },
     "verifier_repairs": 0,
-    "trace_events": 502
+    "trace_events": 502,
+    "qa": {
+      "issue_counts": {
+        "late_delivery_seller": 8,
+        "unsupported_late_claim": 9,
+        "canceled_order_paid": 8,
+        "valid_split_payment": 9,
+        "unavailable_order_paid": 8,
+        "late_delivery_logistics": 8
+      },
+      "status_counts": {
+        "action_required": 32,
+        "no_action": 18
+      },
+      "aggregate_totals": {
+        "item_total_brl": "4686.52",
+        "freight_total_brl": "727.47",
+        "payment_total_brl": "7782.89",
+        "recommended_refund_brl": "3429.64"
+      },
+      "output_count": 50,
+      "zip_path": "D:\\duc\\uni\\VINAI\\solo\\Multiagent-A2A\\submission.zip"
+    }
   }
 }

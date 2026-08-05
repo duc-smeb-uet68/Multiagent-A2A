@@ -1,0 +1,5 @@
+# Optional Kaggle/GPU runtime. The project never installs these automatically.
+transformers>=4.51,<5
+accelerate>=1.2,<2
+bitsandbytes>=0.43; platform_system == "Linux"
+

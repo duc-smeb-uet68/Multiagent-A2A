@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multiagent-a2a"
+version = "1.0.0"
+description = "Offline-first multi-agent resolution for Olist e-commerce disputes"
+readme = "PROJECT_GUIDE.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pandas>=2.0,<3",
+]
+
+[project.optional-dependencies]
+qwen = [
+  "transformers>=4.51,<5",
+  "accelerate>=1.2,<2",
+  "bitsandbytes>=0.43; platform_system == 'Linux'",
+]
+test = [
+  "pytest>=8,<9",
+  "nbclient>=0.10,<1",
+  "nbformat>=5.10,<6",
+]
+
+[project.scripts]
+multiagent-a2a = "multiagent_a2a.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+markers = [
+  "integration: runs against the official local dataset",
+  "gpu: requires an attached local Qwen model and CUDA GPU",
+  "notebook: executes the thin Kaggle notebook runner",
+]
+

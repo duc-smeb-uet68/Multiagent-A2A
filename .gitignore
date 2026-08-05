@@ -1,3 +1,26 @@
 submission.zip
 
 output/
+
+# Python/test/build artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+build/
+dist/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Secrets and local model assets must never be committed
+.env
+.env.*
+!.env.example
+models/
+checkpoints/
+.cache/huggingface/
+*.safetensors
+*.safetensors.index.json
+*.gguf
