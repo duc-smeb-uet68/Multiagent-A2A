@@ -3,7 +3,7 @@
 from .config import RunConfig
 
 __all__ = ["RunConfig", "run_pipeline"]
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 
 def __getattr__(name: str):
@@ -13,4 +13,3 @@ def __getattr__(name: str):
 
         return run_pipeline
     raise AttributeError(name)
-

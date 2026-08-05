@@ -1,9 +1,9 @@
 # K3 Day 09 - Multi-Agent E-commerce Dispute Resolution
 
-> Implementation: source code đã được tách thành package `src/multiagent_a2a`;
-> xem [PROJECT_GUIDE.md](PROJECT_GUIDE.md) để chạy local/Kaggle và
-> [architecture.md](architecture.md) để xem kiến trúc. Notebook ở root là runner
-> mỏng; project không tự tải model hoặc gọi Hugging Face Hub.
+> File `multi_agent_ecommerce_dispute_qwen3.ipynb` là bản standalone: chứa toàn
+> bộ data pipeline, agent, verifier, QA và đóng ZIP, không import package nội bộ.
+> Package `src/multiagent_a2a` vẫn được giữ làm bản modular/CLI và regression test.
+> Cả hai đường chạy đều không tự tải model hoặc gọi Hugging Face Hub.
 
 ## 1. Bài toán
 

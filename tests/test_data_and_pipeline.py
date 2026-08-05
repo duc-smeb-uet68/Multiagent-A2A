@@ -27,6 +27,7 @@ EXPECTED_ISSUES = {
     "unsupported_late_claim": 9,
 }
 EXPECTED_STATUSES = {"action_required": 32, "no_action": 18}
+EXPECTED_CONFIDENCES = {"0.92": 50}
 EXPECTED_TOTALS = {
     "item_total_brl": Decimal("4686.52"),
     "freight_total_brl": Decimal("727.47"),
@@ -117,7 +118,7 @@ def _assert_case_fixture(payload: dict[str, Any], expected: dict[str, Any]) -> N
     assert payload["assessment"] == {
         "primary_issue": expected["issue"],
         "case_status": expected["status"],
-        "confidence": 0.99,
+        "confidence": 0.92,
     }
     entities = payload["affected_entities"]
     assert {key: len(value) for key, value in entities.items()} == expected[
@@ -208,6 +209,7 @@ def test_official_deterministic_pipeline_artifacts(
     assert report.qa.output_count == 50
     assert report.qa.issue_counts == EXPECTED_ISSUES
     assert report.qa.status_counts == EXPECTED_STATUSES
+    assert report.qa.confidence_counts == EXPECTED_CONFIDENCES
     assert report.qa.aggregate_totals == EXPECTED_TOTALS
 
     expected_names = {f"EC_{index:03d}.json" for index in range(1, 51)}
@@ -243,12 +245,15 @@ def test_official_deterministic_pipeline_artifacts(
 
     assert config.metadata_path.read_bytes() == config.mirrored_metadata_path.read_bytes()
     metadata = json.loads(config.metadata_path.read_text(encoding="utf-8"))
-    assert metadata["model"]["configured_model"] == "Qwen/Qwen3-8B"
-    assert metadata["model"]["requested"] is False
-    assert metadata["model"]["ready"] is False
-    assert metadata["model"]["status"] == "disabled_deterministic_fallback"
-    assert metadata["model"]["network_permitted"] is False
-    assert metadata["model"]["calls"] == 0
+    assert metadata["project"] == {"name": "multiagent-a2a", "version": "1.1.0"}
+    assert metadata["model"] == "Qwen/Qwen3-8B"
+    assert metadata["parameter_size"] == "8.2B"
+    assert metadata["llm_backend"]["configured_model"] == "Qwen/Qwen3-8B"
+    assert metadata["llm_backend"]["requested"] is False
+    assert metadata["llm_backend"]["ready"] is False
+    assert metadata["llm_backend"]["status"] == "disabled_deterministic_fallback"
+    assert metadata["llm_backend"]["network_permitted"] is False
+    assert metadata["llm_backend"]["calls"] == 0
     assert metadata["policy_version"] == "EC_POLICY_V1"
     assert metadata["data"]["source_row_counts"] == EXPECTED_SOURCE_ROWS
     assert metadata["data"]["retained_row_counts"] == EXPECTED_RETAINED_ROWS
@@ -260,6 +265,7 @@ def test_official_deterministic_pipeline_artifacts(
     assert metadata["run"]["trace_events"] == 502
     assert metadata["run"]["qa"]["issue_counts"] == EXPECTED_ISSUES
     assert metadata["run"]["qa"]["status_counts"] == EXPECTED_STATUSES
+    assert metadata["run"]["qa"]["confidence_counts"] == EXPECTED_CONFIDENCES
     assert metadata["run"]["qa"]["aggregate_totals"] == {
         key: str(value) for key, value in EXPECTED_TOTALS.items()
     }
@@ -340,3 +346,17 @@ def test_olist_loader_validates_keys_foreign_keys_and_missing_orders(
     duplicate_directory = olist_dir_factory(duplicate_item=True)
     with pytest.raises(ValueError, match="must be unique"):
         OlistRepository.load_for_orders(duplicate_directory, ["order-1"])
+
+
+def test_olist_loader_rejects_timestamp_precision_lost_by_spreadsheet(
+    olist_dir_factory,
+) -> None:
+    directory = olist_dir_factory()
+    orders_path = directory / "olist_orders_dataset.csv"
+    rewritten = orders_path.read_text(encoding="utf-8").replace(
+        "2018-01-01 00:00:00", "1/1/2018 0:00"
+    )
+    orders_path.write_text(rewritten, encoding="utf-8")
+
+    with pytest.raises(ValueError, match="must preserve canonical Olist timestamps"):
+        OlistRepository.load_for_orders(directory, ["order-1"])

@@ -1,61 +1,36 @@
 {
-  "model": {
-    "configured_model": "Qwen/Qwen3-8B",
-    "parameter_size": "8.2B",
-    "model_limit_compliance": "8.2B <= 10B per agent",
-    "network_permitted": false,
-    "download_policy": "forbidden_local_files_only",
+  "project": {
+    "name": "multiagent-a2a-standalone",
+    "version": "2.0.0"
+  },
+  "model": "Qwen/Qwen3-8B",
+  "parameter_size": "8.2B",
+  "model_limit_compliance": "8.2B <= 10B per agent",
+  "policy_version": "EC_POLICY_V1",
+  "llm_backend": {
     "requested": false,
-    "effective_model": null,
     "status": "disabled_deterministic_fallback",
     "ready": false,
-    "offline_enforced": true,
+    "configured_model": "Qwen/Qwen3-8B",
     "source": null,
-    "source_kind": null,
-    "revision": null,
-    "quantization": null,
-    "generation": {
-      "enable_thinking": false,
-      "do_sample": false,
-      "max_input_tokens": 2048,
-      "max_new_tokens": 96
-    },
+    "network_permitted": false,
+    "download_policy": "forbidden_local_files_only",
     "calls": 0,
     "parsed_responses": 0,
-    "parse_errors": 0,
-    "generation_errors": 0,
-    "error_counts": {
-      "disabled": 1
-    },
-    "errors": [
-      {
-        "code": "disabled",
-        "phase": "configuration",
-        "message": "LLM is disabled",
-        "recoverable": true,
-        "source_kind": null
-      }
-    ]
+    "errors": []
   },
-  "policy_version": "EC_POLICY_V1",
   "framework": {
-    "orchestration": "custom Python typed structured-handoff multi-agent",
-    "inference": "Hugging Face Transformers (optional, local-only)",
-    "transformers_version": null,
-    "accelerate_version": null,
-    "bitsandbytes_version": null,
-    "pandas_version": "2.2.3"
+    "orchestration": "standalone Python structured-handoff multi-agent",
+    "inference": "Transformers optional/local-only",
+    "pandas_version": "2.2.3",
+    "transformers_version": null
   },
   "runtime": {
     "environment": "local",
     "python_version": "3.13.1",
     "platform": "Windows-11-10.0.26200-SP0",
-    "started_at_utc": "2026-08-05T04:59:50.256248+00:00",
-    "duration_seconds": 0.282,
-    "gpu_count": 0,
-    "gpus": [],
-    "torch_version": "2.6.0+cpu",
-    "cuda_available": false
+    "started_at_utc": "2026-08-05T06:00:33.831301+00:00",
+    "duration_seconds": 0.349
   },
   "data": {
     "source_row_counts": {
@@ -72,14 +47,10 @@
     }
   },
   "run": {
-    "run_id": "9bc4d1b2796240cb8243d36e7910936c",
+    "run_id": "c85615fc49d34afa99e20bfd8ab77114",
     "cases_processed": 50,
     "qwen_validated_cases": 0,
     "deterministic_fallback_cases": 50,
-    "fallback_cases_by_reason": {
-      "disabled": 50
-    },
-    "verifier_repairs": 0,
     "trace_events": 502,
     "qa": {
       "issue_counts": {
@@ -94,6 +65,9 @@
         "action_required": 32,
         "no_action": 18
       },
+      "confidence_counts": {
+        "0.92": 50
+      },
       "aggregate_totals": {
         "item_total_brl": "4686.52",
         "freight_total_brl": "727.47",
@@ -101,7 +75,7 @@
         "recommended_refund_brl": "3429.64"
       },
       "output_count": 50,
-      "zip_path": "D:\\duc\\uni\\VINAI\\solo\\Multiagent-A2A\\submission.zip"
+      "payload_sha256": "d6f9007649523a48f11bde5e98a0166ebdbb87d6aadb92275f7e205d550e2e78"
     }
   }
 }

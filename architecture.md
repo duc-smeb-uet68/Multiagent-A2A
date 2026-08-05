@@ -2,8 +2,9 @@
 
 ## Mục tiêu
 
-Hệ thống xử lý 50 khiếu nại Olist theo `EC_POLICY_V1`. Mã chạy chính nằm trong
-package `src/multiagent_a2a`; notebook chỉ là runner mỏng cho Kaggle. Một backend
+Hệ thống xử lý 50 khiếu nại Olist theo `EC_POLICY_V1`. Notebook ở root là bản
+standalone tự chứa toàn bộ pipeline để nộp/chạy Kaggle; package
+`src/multiagent_a2a` là bản modular cho CLI và test. Một backend
 `Qwen/Qwen3-8B` dùng chung có thể đề xuất issue/cause/party, nhưng rule engine
 xác định luôn là nguồn thẩm quyền cho tiền, evidence và quyết định cuối.
 
@@ -17,7 +18,8 @@ sinh đủ artifact nếu dữ liệu đầu vào hợp lệ.
 
 ```mermaid
 flowchart LR
-    CLI["CLI / Kaggle notebook"] --> P["Application pipeline"]
+    CLI["CLI package"] --> P["Application pipeline"]
+    NB["Standalone notebook"] --> P
     I["50 case JSON"] --> P
     D["4 Olist CSV cần thiết"] --> R["Olist repository"]
     P --> C["Coordinator Agent"]
@@ -50,12 +52,13 @@ constants + config + contracts + domain
                  ↓
        application pipeline
                  ↓
-          CLI / notebook
+               CLI
 ```
 
 Import package không đọc CSV, không load model, không cài package và không ghi
-file. `run_pipeline()` là composition root duy nhất tạo repository, trace,
-gateway và các agent cụ thể.
+file. `run_pipeline()` là composition root của bản package. Notebook co-locate
+các lớp tương đương trong một file và không import `multiagent_a2a`; golden
+payload SHA-256 bảo đảm hai implementation không lệch output.
 
 ## Vai trò và quyền truy cập
 

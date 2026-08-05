@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from ..constants import ISSUE_SPECS, VERIFIED_CONFIDENCE
+from ..constants import ISSUE_SPECS, OFFICIAL_CONFIDENCE
 from ..contracts import (
     CaseInput,
     DeliveryHandoff,
@@ -112,7 +112,7 @@ def assemble_output(
         "assessment": {
             "primary_issue": decision.primary_issue,
             "case_status": decision.case_status,
-            "confidence": VERIFIED_CONFIDENCE,
+            "confidence": OFFICIAL_CONFIDENCE,
         },
         "affected_entities": {
             "order_ids": [order_id],

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "multiagent-a2a"
-version = "1.0.0"
+version = "1.1.0"
 description = "Offline-first multi-agent resolution for Olist e-commerce disputes"
 readme = "PROJECT_GUIDE.md"
 requires-python = ">=3.10"
@@ -41,4 +41,3 @@ markers = [
   "gpu: requires an attached local Qwen model and CUDA GPU",
   "notebook: executes the thin Kaggle notebook runner",
 ]
-

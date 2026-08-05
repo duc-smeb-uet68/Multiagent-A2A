@@ -1,8 +1,8 @@
 # Multiagent A2A — hướng dẫn chạy project
 
-Project đã tách notebook ban đầu thành package Python có contracts, data ports,
-agents, Qwen gateway, verifier, artifact QA, CLI và test. Notebook vẫn là entrypoint
-thuận tiện trên Kaggle nhưng không chứa lại business logic.
+Project có hai entrypoint tương đương: package Python cho CLI/test và notebook
+standalone cho Kaggle. Notebook tự chứa business logic, không cần `pyproject.toml`,
+`src/` hoặc bước cài package để Run All.
 
 ## Cấu trúc
 
@@ -21,7 +21,7 @@ src/multiagent_a2a/
 ├── contracts.py
 └── ports.py
 tests/               # unit + official integration
-multi_agent_ecommerce_dispute_qwen3.ipynb
+multi_agent_ecommerce_dispute_qwen3.ipynb  # standalone, có thể chạy độc lập
 ```
 
 ## Chạy local bằng fallback
@@ -36,17 +36,29 @@ python -m multiagent_a2a run --data-dir data --input-dir input --work-root . --n
 Kết quả gồm `output/`, `submission.zip`, `trace.jsonl`, `metadata.json` và mirror
 trong `logging/`.
 
-## Chạy trên Kaggle với Qwen3-8B
+QA chính thức còn khóa profile `confidence=0.92` cho đủ 50 case, đúng với payload
+tham chiếu trong đề. Notebook in thêm SHA-256, số entry và kiểm tra ZIP chỉ chứa
+JSON ở root để tránh submit nhầm artifact cũ.
 
-Attach ba asset vào notebook:
+### Regression 94,11 điểm
 
-1. repo này (phải có `pyproject.toml` và `src/multiagent_a2a`);
-2. data/cases (các CSV cần thiết và `EC_001.json` … `EC_050.json`);
-3. Qwen3-8B dưới dạng Kaggle Model/Dataset đã có sẵn trên `/kaggle/input`.
+`94,11` gần trùng `16/17 × 100 = 94,1176`, trong khi audit độc lập cho thấy 16
+nhóm field nghiệp vụ đã đúng và field sai có tính hệ thống là confidence `0.99`
+so với mẫu `0.92`. Bản standalone 2.0.0 vì vậy giữ nguyên issue, entity, evidence,
+refund và action đang đúng, đồng thời khóa field confidence bằng golden QA. Kết
+quả tăng điểm thực tế vẫn cần được xác nhận bằng lần submit mới.
 
-Bật GPU rồi Run All notebook. Nếu auto-discovery có nhiều asset giống nhau, điền
-`MODEL_PATH` trong cell cấu hình. Có thể điền `DATA_DIR` và `INPUT_DIR`; để `None`
-thì runner tự tìm marker. Artifacts nằm tại `/kaggle/working`.
+## Chạy notebook standalone trên Kaggle
+
+Attach dữ liệu vào notebook:
+
+1. bốn Olist CSV cần thiết và `EC_001.json` … `EC_050.json`;
+2. tùy chọn: Qwen3-8B đã có sẵn dưới dạng Kaggle Model/Dataset.
+
+Run All notebook. Mặc định `ENABLE_LLM=False`; nếu chủ động dùng model local thì
+đặt `ENABLE_LLM=True` và `MODEL_PATH` tới asset đã attach. Có thể điền `DATA_DIR`
+và `INPUT_DIR`; để `None` thì notebook tự tìm marker. Artifacts nằm tại
+`/kaggle/working`.
 
 Project không tự chạy `pip`, không gọi Hugging Face Hub và không tải model. Nếu
 Kaggle image thiếu optional dependencies, backend ghi rõ lý do vào metadata rồi

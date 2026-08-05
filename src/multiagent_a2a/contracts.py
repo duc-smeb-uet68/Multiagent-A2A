@@ -117,6 +117,7 @@ class ProcessedCase:
 class QaReport:
     issue_counts: dict[str, int]
     status_counts: dict[str, int]
+    confidence_counts: dict[str, int]
     aggregate_totals: dict[str, Decimal]
     output_count: int
     zip_path: Path
@@ -125,6 +126,7 @@ class QaReport:
         return {
             "issue_counts": dict(self.issue_counts),
             "status_counts": dict(self.status_counts),
+            "confidence_counts": dict(self.confidence_counts),
             "aggregate_totals": {key: str(value) for key, value in self.aggregate_totals.items()},
             "output_count": self.output_count,
             "zip_path": str(self.zip_path),
@@ -157,4 +159,3 @@ class RunReport:
             "submission_zip": str(self.submission_zip),
             "qa": self.qa.to_dict(),
         }
-

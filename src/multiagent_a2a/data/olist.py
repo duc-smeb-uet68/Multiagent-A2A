@@ -42,6 +42,13 @@ _REQUIRED_COLUMNS = {
     "sellers": {"seller_id"},
 }
 
+_OLIST_TIMESTAMP_PATTERN = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"
+_ORDER_TIMESTAMP_COLUMNS = (
+    "order_delivered_carrier_date",
+    "order_delivered_customer_date",
+    "order_estimated_delivery_date",
+)
+
 
 def _read_csv(path: Path) -> pd.DataFrame:
     try:
@@ -85,6 +92,29 @@ def _validate_positive_integer_key(frame: pd.DataFrame, column: str, *, name: st
     if not valid.all():
         examples = values.loc[~valid].head(5).tolist()
         raise ValueError(f"{name}.{column} must contain positive integers; examples={examples}")
+
+
+def _validate_timestamp_precision(
+    frame: pd.DataFrame, columns: Sequence[str], *, name: str
+) -> None:
+    """Reject spreadsheet-style rewrites that silently discard timestamp seconds."""
+
+    for column in columns:
+        values = frame[column].str.strip()
+        populated = values.ne("")
+        canonical = values.str.fullmatch(_OLIST_TIMESTAMP_PATTERN, na=False)
+        parsed = pd.to_datetime(
+            values.where(populated),
+            format="%Y-%m-%d %H:%M:%S",
+            errors="coerce",
+        )
+        invalid = populated & (~canonical | parsed.isna())
+        if invalid.any():
+            examples = values.loc[invalid].head(5).tolist()
+            raise ValueError(
+                f"{name}.{column} must preserve canonical Olist timestamps "
+                f"(YYYY-MM-DD HH:MM:SS); examples={examples}"
+            )
 
 
 def _normalized_order_ids(order_ids: Iterable[str]) -> frozenset[str]:
@@ -208,6 +238,12 @@ class OlistRepository(OrderSellerReadPort, PaymentReadPort):
         retained_items = items.loc[items["order_id"].isin(targets)].copy()
         retained_payments = payments.loc[payments["order_id"].isin(targets)].copy()
         retained_seller_ids = set(retained_items["seller_id"])
+        _validate_timestamp_precision(
+            retained_orders, _ORDER_TIMESTAMP_COLUMNS, name="orders"
+        )
+        _validate_timestamp_precision(
+            retained_items, ("shipping_limit_date",), name="items"
+        )
 
         order_lookup = {
             record["order_id"]: record for record in retained_orders.to_dict(orient="records")

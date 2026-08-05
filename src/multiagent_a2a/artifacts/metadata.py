@@ -6,6 +6,7 @@ from typing import Any, Mapping
 
 import pandas as pd
 
+from .. import __version__
 from ..config import RunConfig
 from ..constants import MODEL_PARAMETER_SIZE, POLICY_VERSION
 from ..contracts import CaseRunInfo, QaReport
@@ -31,15 +32,21 @@ def build_metadata(
         for info in run_info.values()
         if info.decision_source == "deterministic_fallback"
     )
+    model_runtime = {
+        "configured_model": config.model_id,
+        "parameter_size": MODEL_PARAMETER_SIZE,
+        "model_limit_compliance": "8.2B <= 10B per agent",
+        "network_permitted": False,
+        "download_policy": "forbidden_local_files_only",
+        **dict(gateway_snapshot),
+    }
     return {
-        "model": {
-            "configured_model": config.model_id,
-            "parameter_size": MODEL_PARAMETER_SIZE,
-            "model_limit_compliance": "8.2B <= 10B per agent",
-            "network_permitted": False,
-            "download_policy": "forbidden_local_files_only",
-            **dict(gateway_snapshot),
-        },
+        "project": {"name": "multiagent-a2a", "version": __version__},
+        # Keep the original top-level metadata contract for simple course graders.
+        "model": config.model_id,
+        "parameter_size": MODEL_PARAMETER_SIZE,
+        "model_limit_compliance": "8.2B <= 10B per agent",
+        "llm_backend": model_runtime,
         "policy_version": POLICY_VERSION,
         "framework": {
             "orchestration": "custom Python typed structured-handoff multi-agent",

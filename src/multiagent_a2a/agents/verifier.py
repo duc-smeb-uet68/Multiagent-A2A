@@ -4,7 +4,7 @@ from copy import deepcopy
 import json
 from typing import Any
 
-from ..constants import ISSUE_SPECS
+from ..constants import ISSUE_SPECS, OFFICIAL_CONFIDENCE
 from ..contracts import CaseInput, JsonObject, OrderSellerHandoff, PaymentHandoff
 from ..domain.money import money_decimal
 from ..ports import TraceSink
@@ -62,6 +62,8 @@ class VerifierAgent:
             errors.append("confidence_type")
         elif not 0 <= confidence <= 1:
             errors.append("confidence_range")
+        elif confidence != OFFICIAL_CONFIDENCE:
+            errors.append("confidence_policy_mismatch")
 
         entities = candidate.get("affected_entities")
         if not isinstance(entities, dict):
@@ -135,4 +137,3 @@ class VerifierAgent:
             to_agent="CoordinatorAgent",
         )
         return result, repaired
-

@@ -133,6 +133,7 @@ def test_canonical_output_uses_only_source_derived_evidence():
         order, payment, make_delivery(late=True, late_sellers=("seller-1",))
     )
     payload = assemble_output(case, order, payment, decision)
+    assert payload["assessment"]["confidence"] == 0.92
     assert payload["evidence_ids"] == [
         "order:order-1",
         "item:order-1:1",
@@ -141,4 +142,3 @@ def test_canonical_output_uses_only_source_derived_evidence():
         "policy:SELLER_HANDOFF_AFTER_LIMIT",
     ]
     assert payload["financial_resolution"]["recommended_refund_brl"] == 15.0
-
